@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>A₹Pay Dashboard</title>
+
+<link rel="stylesheet" href="dashboard.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+        <div class="logo-section">
+            <img src="logo.png" class="logo">
+        </div>
+
+        <ul>
+            <li><a href="dashboard.html" class="active">🏠 Dashboard</a></li>
+            <li><a href="payment.html">💳 Payment</a></li>
+            <li><a href="transaction.html">📜 Transactions</a></li>
+            <li><a href="analytic.html">📊 Analytics</a></li>
+            <li><a href="setting.html">⚙️ Settings</a></li>
+            <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+        </ul>
+
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <div class="header">
+
+            <div>
+                <h1>Welcome Back 👋</h1>
+                <p>Manage your payments and monitor transactions.</p>
+            </div>
+
+            <div class="user-profile">
+                <div class="avatar" id="avatar"></div>
+                <h3 id="userName"></h3>
+            </div>
+
+        </div>
+
+        <!-- BALANCE -->
+        <div class="balance-card">
+            <h3>Available Balance</h3>
+            <h2 id="balance">₹ 0</h2>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats">
+
+            <div class="stat-card">
+                <h3 id="totalAmount">₹ 0</h3>
+                <p>Total Transactions Value</p>
+            </div>
+
+            <div class="stat-card">
+                <h3 id="successCount">0</h3>
+                <p>Successful Payments</p>
+            </div>
+
+            <div class="stat-card">
+                <h3 id="failedCount">0</h3>
+                <p>Failed Payments</p>
+            </div>
+
+            <div class="stat-card">
+                <h3 id="successRate">0%</h3>
+                <p>Success Rate</p>
+            </div>
+
+        </div>
+
+        <!-- RECENT TRANSACTIONS -->
+        <div class="table-card">
+
+            <h2>Recent Transactions</h2>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+
+                <tbody id="txnBody">
+                    <!-- Dynamic Data -->
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+
+/* =========================
+   LOAD DASHBOARD DATA
+========================= */
+
+function loadDashboard(){
+
+    const transactions =
+        JSON.parse(localStorage.getItem("transactions")) || [];
+
+    let totalAmount = 0;
+    let success = 0;
+    let failed = 0;
+
+    transactions.forEach(t => {
+
+        const amt = Number(t.amount || 0);
+
+        if(t.status === "Success"){
+
+            success++;
+            totalAmount += amt;
+
+        }else{
+
+            failed++;
+        }
+    });
+
+    const rate = transactions.length > 0
+        ? ((success / transactions.length) * 100).toFixed(1)
+        : 0;
+
+    /* Dashboard Cards */
+
+    document.getElementById("totalAmount").innerText =
+        "₹ " + totalAmount;
+
+    document.getElementById("successCount").innerText =
+        success;
+
+    document.getElementById("failedCount").innerText =
+        failed;
+
+    document.getElementById("successRate").innerText =
+        rate + "%";
+
+    document.getElementById("balance").innerText =
+        "₹ " + totalAmount;
+
+    /* Recent Transactions */
+
+    const tbody =
+        document.getElementById("txnBody");
+
+    /* Show Latest 5 */
+
+    const recent =
+        transactions.slice(0,5);
+
+    if(recent.length === 0){
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="6">
+                    No Transactions Yet
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+    tbody.innerHTML = recent.map(t => `
+
+        <tr>
+
+            <td>${t.transactionId}</td>
+
+            <td>${t.customerName}</td>
+
+            <td>₹${t.amount}</td>
+
+            <td class="${t.status.toLowerCase()}">
+                ${t.status}
+            </td>
+
+            <td>
+                ${new Date(t.date).toLocaleDateString()}
+            </td>
+
+            <td>
+                ${new Date(t.date).toLocaleTimeString()}
+            </td>
+
+        </tr>
+
+    `).join("");
+}
+
+
+/* =========================
+   INIT
+========================= */
+
+window.onload = function(){
+
+    let userName =
+        localStorage.getItem("customerName");
+
+    /* Fallback */
+
+    if(!userName){
+
+        userName = "User";
+    }
+
+    document.getElementById("userName").innerText =
+        userName;
+
+    document.getElementById("avatar").innerText =
+        userName.charAt(0).toUpperCase();
+
+    loadDashboard();
+};
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+function logout(){
+
+    if(confirm("Are you sure you want to logout?")){
+
+        localStorage.removeItem("customerName");
+
+        window.location.href = "index.html";
+    }
+}
+
+</script>
+</body>
+</html>

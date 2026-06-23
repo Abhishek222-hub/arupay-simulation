@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>A₹Pay - Account Created Successfully</title>
+
+<link rel="stylesheet" href="accountsuccess.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<!-- Background Animation -->
+
+<div class="background">
+
+```
+<div class="circle circle1"></div>
+<div class="circle circle2"></div>
+<div class="circle circle3"></div>
+```
+
+</div>
+
+<!-- Logo -->
+
+<header>
+<img src="logo.png"
+     alt="A₹Pay Logo"
+     class="logo">
+
+</header>
+
+<!-- Success Card -->
+
+<div class="container">
+
+```
+<div class="success-card">
+
+    <div class="success-icon">
+
+        ✔
+
+    </div>
+
+    <h1>
+        Account Created Successfully
+    </h1>
+
+    <p class="subtitle">
+
+        Congratulations! Your A₹Pay account has been created successfully.
+
+    </p>
+
+    <!-- Account Information -->
+
+    <div class="details-box">
+
+        <h3>Account Information</h3>
+
+        <p>
+            <strong>Name:</strong>
+            <span id="userName">Guest User</span>
+        </p>
+
+        <p>
+            <strong>Account ID:</strong>
+            <span id="accountId">ARU2026001</span>
+        </p>
+
+        <p>
+            <strong>Status:</strong>
+            Pending Admin Verification
+        </p>
+
+        <p>
+            <strong>Security:</strong>
+            OTP Verified
+        </p>
+
+    </div>
+
+    <!-- Redirect Message -->
+
+    <p class="loading">
+
+        Redirecting to Admin Verification in
+
+        <span id="countdown">
+
+            6
+
+        </span>
+
+        seconds...
+
+    </p>
+
+    <!-- Button -->
+
+    <a href="admin-verification.html"
+       class="login-btn">
+
+        Continue
+
+    </a>
+
+    <!-- Footer -->
+
+    <p class="footer">
+
+        🔒 Your account is protected by
+        A₹Pay Digital Security Platform
+
+    </p>
+
+</div>
+```
+
+</div>
+
+<script>
+
+/* Load User Data */
+
+const userData =
+JSON.parse(
+    localStorage.getItem("userData")
+);
+
+if(userData){
+
+    document
+    .getElementById("userName")
+    .innerText =
+    userData.fullname;
+
+}
+
+/* Generate Demo Account ID */
+
+const accountId =
+"A₹P" +
+Math.floor(
+    100000 + Math.random() * 900000
+);
+
+document
+.getElementById("accountId")
+.innerText =
+accountId;
+
+localStorage.setItem(
+    "accountId",
+    accountId
+);
+
+/* Countdown */
+
+let seconds = 6;
+
+const timer =
+setInterval(()=>{
+
+    seconds--;
+
+    document
+    .getElementById("countdown")
+    .innerText =
+    seconds;
+
+    if(seconds <= 0){
+
+        clearInterval(timer);
+
+        window.location.href =
+        "dashboard.html";
+
+    }
+
+},1000);
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>A₹Pay - Payment Successful</title>
+
+<link rel="stylesheet" href="paymentsuccess.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- BACKGROUND -->
+<div class="background">
+    <div class="circle circle1"></div>
+    <div class="circle circle2"></div>
+    <div class="circle circle3"></div>
+</div>
+
+<!-- HEADER -->
+<header class="navbar">
+
+    <div class="logo-section">
+        <img src="logo.png" class="logo" alt="A₹Pay Logo">
+    </div>
+
+    <ul class="nav-links">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="transaction.html">Transactions</a></li>
+        <li><a href="analytic.html">Analytics</a></li>
+        <li><a href="setting.html">Settings</a></li>
+        <li><a href="payment.html">Payment</a></li>
+    </ul>
+
+</header>
+
+<!-- SUCCESS SECTION -->
+<section class="success-section">
+
+    <div class="success-card">
+
+        <div class="success-icon">✔</div>
+
+        <h1>Payment Successful</h1>
+
+        <p class="message">Your payment has been processed successfully.</p>
+
+        <!-- PAYMENT DETAILS -->
+        <div class="payment-details" id="details">
+            Loading payment details...
+        </div>
+
+        <!-- BUTTONS -->
+        <div class="btn-group">
+            <a href="dashboard.html" class="btn primary-btn">Dashboard</a>
+            <a href="transaction.html" class="btn secondary-btn">Transactions</a>
+        </div>
+
+    </div>
+
+</section>
+
+<script>
+
+/* GET PAYMENT DATA */
+let data = JSON.parse(localStorage.getItem("paymentData"));
+const detailsDiv = document.getElementById("details");
+
+/* UPDATE TRANSACTION STATUS TO SUCCESS */
+if(data){
+
+    data.status = "Success";
+
+    localStorage.setItem(
+        "paymentData",
+        JSON.stringify(data)
+    );
+
+    let transactions =
+    JSON.parse(
+        localStorage.getItem("transactions")
+    ) || [];
+
+    transactions = transactions.map(t => {
+
+        if(
+            t.transactionId === data.transactionId
+        ){
+
+            t.status = "Success";
+
+        }
+
+        return t;
+
+    });
+
+    localStorage.setItem(
+        "transactions",
+        JSON.stringify(transactions)
+    );
+
+}
+
+/* DATE FORMAT */
+function formatDateTime(dateValue){
+
+    if(!dateValue) return "N/A";
+
+    const d = new Date(dateValue);
+
+    if(isNaN(d.getTime())) return "N/A";
+
+    return d.toLocaleDateString("en-IN") +
+    " • " +
+    d.toLocaleTimeString("en-IN",{
+        hour:"2-digit",
+        minute:"2-digit"
+    });
+
+}
+
+/* SHOW DETAILS */
+if(data){
+
+    detailsDiv.innerHTML = `
+
+    <div class="detail-row">
+        <span>Transaction ID</span>
+        <strong>${data.transactionId}</strong>
+    </div>
+
+    <div class="detail-row">
+        <span>Customer Name</span>
+        <strong>${data.customerName}</strong>
+    </div>
+
+    <div class="detail-row">
+        <span>Amount</span>
+        <strong>₹${data.amount}</strong>
+    </div>
+
+    <div class="detail-row">
+        <span>Payment Method</span>
+        <strong>${data.method}</strong>
+    </div>
+
+    <div class="detail-row">
+        <span>Date & Time</span>
+        <strong>${formatDateTime(data.date)}</strong>
+    </div>
+
+    <div class="detail-row">
+        <span>Status</span>
+        <strong class="success-status">
+            Success
+        </strong>
+    </div>
+
+    `;
+
+}else{
+
+    detailsDiv.innerHTML = `
+        <div class="detail-row">
+            <span>Status</span>
+            <strong>No Payment Found</strong>
+        </div>
+    `;
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>A₹Pay Login</title>
+
+<link rel="stylesheet" href="login.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="login-container">
+
+```
+<div class="login-card">
+
+    <img src="logo.png"
+         alt="A₹Pay Logo"
+         class="logo">
+
+    <h2>Welcome Back</h2>
+
+    <p class="subtitle">
+        Login to access your A₹Pay Dashboard
+    </p>
+
+    <form id="loginForm">
+
+        <div class="input-group">
+
+            <label for="customerName">
+                Customer Name
+            </label>
+
+            <input
+                type="text"
+                id="customerName"
+                placeholder="Enter Name"
+                required>
+
+        </div>
+
+        <div class="input-group">
+
+            <label for="email">
+                Email Address
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter email"
+                required>
+
+        </div>
+
+        <div class="input-group">
+
+            <label for="password">
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter password"
+                required>
+
+        </div>
+
+        <div class="options">
+
+            <label>
+
+                <input type="checkbox">
+
+                Remember Me
+
+            </label>
+
+            <a href="#">
+                Forgot Password?
+            </a>
+
+        </div>
+
+        <button class="login-btn" type="submit">
+
+            Login Securely
+
+        </button>
+
+        <div class="signup-link">
+
+            Don't have an account?
+
+            <a href="signup.html">
+                Create Account
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+```
+
+</div>
+
+<script>
+
+document
+.getElementById("loginForm")
+.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    const customerName =
+    document.getElementById("customerName")
+    .value.trim();
+
+    const email =
+    document.getElementById("email")
+    .value.trim();
+
+    const password =
+    document.getElementById("password")
+    .value;
+
+    if(
+        customerName === "" ||
+        email === "" ||
+        password === ""
+    ){
+
+        alert(
+            "Please fill in all fields."
+        );
+
+        return;
+
+    }
+
+    /* Get Registered User */
+
+    const userData =
+    JSON.parse(
+        localStorage.getItem("userData")
+    );
+
+    if(!userData){
+
+        alert(
+            "No account found. Please sign up first."
+        );
+
+        window.location.href =
+        "signup.html";
+
+        return;
+
+    }
+
+    /* Validate Login */
+
+    if(
+        userData.fullname !== customerName ||
+        userData.email !== email ||
+        userData.password !== password
+    ){
+
+        alert(
+            "Invalid login credentials."
+        );
+
+        return;
+
+    }
+
+    localStorage.setItem(
+        "customerName",
+        customerName
+    );
+
+    localStorage.setItem(
+        "authFlow",
+        "login"
+    );
+
+    localStorage.setItem(
+        "isLoggedIn",
+        "true"
+    );
+
+    window.location.href =
+    "verification.html";
+
+});
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,271 @@
+/* =========================
+   GLOBAL
+========================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+:root{
+    --bg:#d7f2f8;
+    --primary:#1cc5e8;
+    --primary-hover:#12b5cb;
+    --text:#1e293b;
+    --light:#64748b;
+    --card:#ffffff;
+    --border:#e2e8f0;
+}
+
+body{
+    min-height:100vh;
+    background:var(--bg);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+/* =========================
+   CONTAINER
+========================= */
+
+.verify-container{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.verify-card{
+    width:100%;
+    max-width:500px;
+    background:var(--card);
+    padding:40px;
+    border-radius:25px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+/* =========================
+   LOGO
+========================= */
+
+.logo{
+    width:140px;
+    max-width:100%;
+    margin-bottom:20px;
+
+    animation:
+    floatLogo 3s ease-in-out infinite,
+    glowLogo 2s infinite alternate;
+}
+
+@keyframes floatLogo{
+
+    0%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-8px);
+    }
+
+    100%{
+        transform:translateY(0);
+    }
+
+}
+
+@keyframes glowLogo{
+
+    from{
+        filter:drop-shadow(0 0 8px #1cc5e8);
+    }
+
+    to{
+        filter:drop-shadow(0 0 20px #1cc5e8);
+    }
+
+}
+
+/* =========================
+   TEXT
+========================= */
+
+h2{
+    color:var(--text);
+    margin-bottom:10px;
+    font-size:28px;
+    font-weight:700;
+}
+
+.subtitle{
+    color:var(--light);
+    margin-bottom:30px;
+    line-height:1.6;
+    font-size:14px;
+}
+
+/* =========================
+   OTP BOX
+========================= */
+
+.otp-box{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:25px;
+    flex-wrap:nowrap;
+}
+
+.otp{
+    width:55px;
+    height:60px;
+    border:2px solid var(--border);
+    border-radius:12px;
+    text-align:center;
+    font-size:22px;
+    font-weight:600;
+    outline:none;
+    transition:all .3s ease;
+}
+
+.otp:focus{
+    border-color:var(--primary);
+    box-shadow:0 0 0 4px rgba(28,197,232,.15);
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    background:var(--primary);
+    color:white;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:all .3s ease;
+}
+
+button:hover{
+    background:var(--primary-hover);
+    transform:translateY(-2px);
+}
+
+button:active{
+    transform:scale(.98);
+}
+
+/* =========================
+   RESEND
+========================= */
+
+.resend{
+    margin-top:20px;
+    color:var(--light);
+    font-size:14px;
+}
+
+.resend a{
+    color:var(--primary);
+    text-decoration:none;
+    font-weight:600;
+}
+
+.resend a:hover{
+    text-decoration:underline;
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media(max-width:768px){
+
+    .verify-card{
+        padding:30px 20px;
+    }
+
+    .logo{
+        width:120px;
+    }
+
+    h2{
+        font-size:24px;
+    }
+
+    .otp{
+        width:48px;
+        height:55px;
+        font-size:20px;
+    }
+
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:480px){
+
+    body{
+        padding:15px;
+    }
+
+    .verify-card{
+        padding:25px 15px;
+        border-radius:20px;
+    }
+
+    .logo{
+        width:100px;
+    }
+
+    h2{
+        font-size:22px;
+    }
+
+    .subtitle{
+        font-size:13px;
+    }
+
+    .otp-box{
+        gap:6px;
+    }
+
+    .otp{
+        width:42px;
+        height:50px;
+        font-size:18px;
+    }
+
+    button{
+        padding:14px;
+        font-size:15px;
+    }
+
+}
+
+/* =========================
+   LARGE SCREEN
+========================= */
+
+@media(min-width:1440px){
+
+    .verify-card{
+        max-width:550px;
+    }
+
+}

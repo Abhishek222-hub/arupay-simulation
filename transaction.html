@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>A₹Pay Transactions</title>
+
+<link rel="stylesheet" href="transaction.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+        <div class="logo-section">
+            <img src="logo.png" class="logo">
+        </div>
+
+        <ul>
+            <li><a href="dashboard.html">🏠 Dashboard</a></li>
+            <li><a href="payment.html">💳 Payment</a></li>
+            <li><a href="transaction.html" class="active">📜 Transactions</a></li>
+            <li><a href="analytic.html">📊 Analytics</a></li>
+            <li><a href="setting.html">⚙️ Settings</a></li>
+            <li><a href="index.html">🚪 Logout</a></li>
+        </ul>
+
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <div class="header">
+            <h1>📜 Transaction History</h1>
+            <p>View and manage all payment records</p>
+        </div>
+
+        <!-- FILTER -->
+        <div class="filter-section">
+
+            <input type="text" id="searchInput" placeholder="Search Transaction ID or Name">
+
+            <select id="statusFilter">
+                <option value="all">All Status</option>
+                <option value="success">Success</option>
+                <option value="failed">Failed</option>
+            </select>
+
+        </div>
+
+        <!-- TABLE -->
+        <div class="table-card">
+
+            <table id="transactionTable">
+
+                <thead>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>Customer</th>
+                        <th>Amount</th>
+                        <th>Method</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+
+                <tbody id="txnBody">
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+
+/* FORMAT DATE & TIME */
+function formatDateTime(dateValue){
+
+```
+if(!dateValue){
+
+    return {
+        date:"N/A",
+        time:"N/A"
+    };
+
+}
+
+const d = new Date(dateValue);
+
+if(isNaN(d.getTime())){
+
+    return {
+        date:"N/A",
+        time:"N/A"
+    };
+
+}
+
+return {
+
+    date:
+    d.toLocaleDateString("en-IN"),
+
+    time:
+    d.toLocaleTimeString(
+        "en-IN",
+        {
+            hour:"2-digit",
+            minute:"2-digit"
+        }
+    )
+
+};
+```
+
+}
+
+
+/* LOAD TRANSACTIONS */
+function loadTransactions(){
+
+    const transactions =
+    JSON.parse(
+        localStorage.getItem("transactions")
+    ) || [];
+
+    const tbody =
+    document.getElementById("txnBody");
+
+    tbody.innerHTML = "";
+
+    if(transactions.length === 0){
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7"
+                    style="text-align:center;">
+                    No Transactions Found
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+    transactions.forEach(t=>{
+
+        const d =
+        new Date(t.date);
+
+        const date =
+        d.toLocaleDateString("en-IN");
+
+        const time =
+        d.toLocaleTimeString(
+            "en-IN",
+            {
+                hour:"2-digit",
+                minute:"2-digit"
+            }
+        );
+
+        tbody.innerHTML += `
+
+        <tr>
+
+            <td>${t.transactionId}</td>
+
+            <td>${t.customerName}</td>
+
+            <td>₹${t.amount}</td>
+
+            <td>${t.method}</td>
+
+            <td class="success">
+                ${t.status}
+            </td>
+
+            <td>${date}</td>
+
+            <td>${time}</td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+/* SEARCH */
+document.getElementById("searchInput").addEventListener("keyup", function () {
+
+    const value = this.value.toLowerCase();
+    const rows = document.querySelectorAll("#txnBody tr");
+
+    rows.forEach(row => {
+        row.style.display = row.innerText.toLowerCase().includes(value) ? "" : "none";
+    });
+
+});
+
+/* STATUS FILTER */
+document.getElementById("statusFilter").addEventListener("change", function () {
+
+    const filter = this.value.toLowerCase();
+    const rows = document.querySelectorAll("#txnBody tr");
+
+    rows.forEach(row => {
+
+        const status = row.cells[4].innerText.toLowerCase();
+
+        if (filter === "all") {
+            row.style.display = "";
+        } else {
+            row.style.display = status === filter ? "" : "none";
+        }
+
+    });
+
+});
+
+/* INIT */
+loadTransactions();
+
+</script>
+
+</body>
+</html>

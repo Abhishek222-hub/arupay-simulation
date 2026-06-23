@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>A₹Pay Enterprise Settings</title>
+
+<link rel="stylesheet" href="setting.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<!-- MOBILE MENU BUTTON -->
+
+<div class="menu-toggle" onclick="toggleMenu()">
+☰
+</div>
+
+<div class="container">
+
+<!-- SIDEBAR -->
+
+<div class="sidebar" id="sidebar">
+
+<div class="logo-section">
+
+<img src="logo.png"
+alt="A₹Pay Logo"
+class="logo">
+
+<h2>A₹Pay</h2>
+
+<p>Enterprise Dashboard</p>
+
+</div>
+
+<ul>
+
+<li><a href="dashboard.html">🏠 Dashboard</a></li>
+
+<li><a href="payment.html">💳 Payment</a></li>
+
+<li><a href="transaction.html">📜 Transactions</a></li>
+
+<li><a href="analytic.html">📊 Analytics</a></li>
+
+<li><a href="setting.html" class="active">⚙️ Settings</a></li>
+
+<li><a href="index.html">🚪 Logout</a></li>
+
+</ul>
+
+</div>
+
+<!-- MAIN -->
+
+<main class="main-content">
+
+<div class="header">
+
+<div>
+
+<h1>⚙️ Settings</h1>
+
+<p>Manage your account preferences</p>
+
+</div>
+
+<div class="theme-box">
+
+<label class="switch">
+
+<input type="checkbox" id="themeToggle">
+
+<span class="slider"></span>
+
+</label>
+
+<span>Dark Mode</span>
+
+</div>
+
+</div>
+
+<!-- PROFILE -->
+
+<div class="card">
+
+<div class="card-header" onclick="toggle(this)">
+👤 Profile Settings
+<span>+</span>
+</div>
+
+<div class="card-body">
+
+<div class="profile-upload">
+
+<img src="images/logo.png"
+id="preview">
+
+<input type="file"
+id="profileImage">
+
+</div>
+
+<input type="text"
+id="name"
+placeholder="Full Name">
+
+<input type="email"
+id="email"
+placeholder="Email Address">
+
+<input type="tel"
+placeholder="Mobile Number">
+
+<button onclick="saveProfile()">
+Save Profile
+</button>
+
+</div>
+
+</div>
+
+<!-- KYC -->
+
+<div class="card">
+
+<div class="card-header" onclick="toggle(this)">
+🪪 KYC Verification
+<span>+</span>
+</div>
+
+<div class="card-body">
+
+<input type="text"
+placeholder="Aadhaar Number">
+
+<input type="text"
+placeholder="PAN Number">
+
+<input type="file">
+
+<button>
+Submit KYC
+</button>
+
+</div>
+
+</div>
+
+<!-- ADDRESS -->
+
+<div class="card">
+
+<div class="card-header" onclick="toggle(this)">
+🏠 Address
+<span>+</span>
+</div>
+
+<div class="card-body">
+
+<input type="text"
+placeholder="Address">
+
+<input type="text"
+placeholder="City">
+
+<input type="text"
+placeholder="State">
+
+<input type="text"
+placeholder="Pincode">
+
+<button>
+Save Address
+</button>
+
+</div>
+
+</div>
+
+<!-- SECURITY -->
+
+<div class="card">
+
+<div class="card-header" onclick="toggle(this)">
+🔒 Security
+<span>+</span>
+</div>
+
+<div class="card-body">
+
+<input type="password"
+placeholder="Current Password">
+
+<input type="password"
+placeholder="New Password">
+
+<input type="password"
+placeholder="Confirm Password">
+
+<button>
+Update Password
+</button>
+
+</div>
+
+</div>
+
+</main>
+
+</div>
+
+<script>
+
+/* MOBILE MENU */
+
+function toggleMenu(){
+
+document.getElementById("sidebar")
+.classList.toggle("show");
+
+}
+
+/* ACCORDION */
+
+function toggle(el){
+
+let body = el.nextElementSibling;
+let icon = el.querySelector("span");
+
+document.querySelectorAll(".card-body")
+.forEach(section=>{
+
+if(section!==body){
+
+section.classList.remove("active");
+
+section.previousElementSibling
+.querySelector("span")
+.innerText="+";
+
+}
+
+});
+
+body.classList.toggle("active");
+
+icon.innerText=
+body.classList.contains("active")
+? "-"
+: "+";
+
+}
+
+/* PROFILE SAVE */
+
+function saveProfile(){
+
+let name =
+document.getElementById("name").value;
+
+let email =
+document.getElementById("email").value;
+
+localStorage.setItem(
+"username",
+name
+);
+
+localStorage.setItem(
+"email",
+email
+);
+
+alert(
+"Profile Updated Successfully ✔"
+);
+
+}
+
+/* LOAD PROFILE */
+
+window.onload=function(){
+
+let name=
+localStorage.getItem("username");
+
+let email=
+localStorage.getItem("email");
+
+if(name)
+document.getElementById("name").value=name;
+
+if(email)
+document.getElementById("email").value=email;
+
+}
+
+/* PROFILE IMAGE PREVIEW */
+
+document
+.getElementById("profileImage")
+.addEventListener("change",function(){
+
+let file=this.files[0];
+
+if(file){
+
+let reader=
+new FileReader();
+
+reader.onload=function(e){
+
+document
+.getElementById("preview")
+.src=e.target.result;
+
+}
+
+reader.readAsDataURL(file);
+
+}
+
+});
+
+/* DARK MODE */
+
+let toggleTheme =
+document.getElementById("themeToggle");
+
+toggleTheme.addEventListener("change",()=>{
+
+document.body.classList.toggle("dark");
+
+});
+
+</script>
+
+</body>
+</html>

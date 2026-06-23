@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>A₹Pay - Processing Payment</title>
+
+<link rel="stylesheet" href="processing.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<!-- BACKGROUND -->
+<div class="background">
+    <div class="circle circle1"></div>
+    <div class="circle circle2"></div>
+    <div class="circle circle3"></div>
+</div>
+
+<!-- PROCESSING CARD -->
+<div class="processing-card">
+
+    <img src="logo.png"
+         alt="A₹Pay Logo"
+         class="logo">
+
+    <h1>Processing Payment</h1>
+
+    <p class="subtitle">
+        Please wait while we securely process your transaction.
+    </p>
+
+    <!-- LOADER -->
+    <div class="loader"></div>
+
+    <!-- PROGRESS BAR -->
+    <div class="progress">
+
+        <div class="progress-bar"
+             id="progressBar">
+            0%
+        </div>
+
+    </div>
+
+    <!-- STATUS -->
+    <p class="status" id="statusText">
+        Connecting to Bank Server...
+    </p>
+
+</div>
+
+<script>
+
+/* CHECK PAYMENT DATA */
+const paymentData =
+JSON.parse(localStorage.getItem("paymentData"));
+
+if (!paymentData) {
+
+    alert("No payment found.");
+
+    window.location.href = "payment.html";
+
+}
+
+/* ELEMENTS */
+const progressBar =
+document.getElementById("progressBar");
+
+const statusText =
+document.getElementById("statusText");
+
+let progress = 0;
+
+const statuses = [
+
+    "Connecting to Bank Server...",
+    "Verifying Payment Details...",
+    "Authenticating Payment...",
+    "Finalizing Transaction...",
+    "Payment Approved"
+
+];
+
+/* PROCESS ANIMATION */
+
+const timer = setInterval(() => {
+
+    progress += 5;
+
+    progressBar.style.width =
+    progress + "%";
+
+    progressBar.innerText =
+    progress + "%";
+
+    if(progress === 25){
+
+        statusText.innerText =
+        statuses[1];
+
+    }
+
+    if(progress === 50){
+
+        statusText.innerText =
+        statuses[2];
+
+    }
+
+    if(progress === 75){
+
+        statusText.innerText =
+        statuses[3];
+
+    }
+
+    if(progress >= 100){
+
+        clearInterval(timer);
+
+        progressBar.style.width = "100%";
+        progressBar.innerText = "100%";
+
+        statusText.innerText =
+        statuses[4];
+
+        /* UPDATE PAYMENT STATUS */
+
+        paymentData.status = "Success";
+
+        localStorage.setItem(
+            "paymentData",
+            JSON.stringify(paymentData)
+        );
+
+        /* UPDATE TRANSACTION LIST */
+
+        let transactions =
+        JSON.parse(
+            localStorage.getItem("transactions")
+        ) || [];
+
+        transactions = transactions.map(t => {
+
+            if(
+                t.transactionId ===
+                paymentData.transactionId
+            ){
+
+                t.status = "Success";
+
+            }
+
+            return t;
+
+        });
+
+        localStorage.setItem(
+            "transactions",
+            JSON.stringify(transactions)
+        );
+
+        /* REDIRECT */
+
+        setTimeout(() => {
+
+            window.location.href =
+            "paymentsuccess.html";
+
+        }, 1000);
+
+    }
+
+}, 250);
+
+</script>
+
+</body>
+</html>

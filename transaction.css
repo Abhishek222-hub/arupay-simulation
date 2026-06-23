@@ -1,0 +1,288 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+:root{
+    --bg:#d7f2f8;
+    --sidebar:#021437;
+    --primary:#1cc5e8;
+    --primary-hover:#12b5cb;
+    --text:#1e293b;
+    --light:#64748b;
+
+    --success:#22c55e;
+    --danger:#ef4444;
+    --warning:#f59e0b;
+}
+
+body{
+    background:var(--bg);
+    overflow-x:hidden;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
+.container{
+    display:flex;
+    min-height:100vh;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+    width:260px;
+    background:var(--sidebar);
+    padding:20px;
+    position:fixed;
+    height:100vh;
+    overflow-y:auto;
+    left:0;
+    top:0;
+}
+
+.logo-section{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.logo{
+    width:140px;
+    animation: floatLogo 3s ease-in-out infinite, glowLogo 2s infinite alternate;
+}
+
+@keyframes floatLogo{
+    0%{transform:translateY(0);}
+    50%{transform:translateY(-6px);}
+    100%{transform:translateY(0);}
+}
+
+@keyframes glowLogo{
+    from{filter:drop-shadow(0 0 5px #1cc5e8);}
+    to{filter:drop-shadow(0 0 18px #1cc5e8);}
+}
+
+.sidebar ul{
+    list-style:none;
+}
+
+.sidebar ul li{
+    margin-bottom:12px;
+}
+
+.sidebar ul li a{
+    display:block;
+    text-decoration:none;
+    color:white;
+    padding:14px;
+    border-radius:12px;
+    transition:.3s;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a.active{
+    background:var(--primary);
+}
+
+/* =========================
+   MAIN CONTENT
+========================= */
+
+.main-content{
+    flex:1;
+    margin-left:260px;
+    padding:30px;
+}
+
+.header{
+    margin-bottom:25px;
+}
+
+.header h1{
+    color:var(--text);
+    margin-bottom:6px;
+}
+
+.header p{
+    color:var(--light);
+}
+
+/* =========================
+   FILTER SECTION
+========================= */
+
+.filter-section{
+    display:flex;
+    gap:15px;
+    margin-bottom:25px;
+    flex-wrap:wrap;
+}
+
+.filter-section input,
+.filter-section select{
+    padding:14px;
+    border:2px solid #e2e8f0;
+    border-radius:12px;
+    outline:none;
+    font-size:15px;
+    background:white;
+    transition:.3s;
+}
+
+.filter-section input{
+    flex:1;
+    min-width:240px;
+}
+
+.filter-section input:focus,
+.filter-section select:focus{
+    border-color:var(--primary);
+}
+
+/* =========================
+   TABLE CARD
+========================= */
+
+.table-card{
+    background:white;
+    border-radius:20px;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+    overflow:hidden;
+}
+
+/* make table scrollable on mobile */
+.table-card{
+    overflow-x:auto;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:700px; /* FIX for mobile table cut */
+}
+
+thead{
+    background:#eef8ff;
+}
+
+thead th{
+    padding:18px;
+    text-align:left;
+    color:var(--text);
+    font-weight:600;
+}
+
+tbody td{
+    padding:16px;
+    border-bottom:1px solid #e5e7eb;
+    color:var(--text);
+}
+
+tbody tr:hover{
+    background:#f8fafc;
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.success{
+    color:var(--success);
+    font-weight:600;
+}
+
+.failed{
+    color:var(--danger);
+    font-weight:600;
+}
+
+.pending{
+    color:var(--warning);
+    font-weight:600;
+}
+
+/* =========================
+   RECEIPT BUTTON
+========================= */
+
+.receipt-btn{
+    border:none;
+    background:var(--primary);
+    color:white;
+    padding:10px 16px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:600;
+    transition:.3s;
+}
+
+.receipt-btn:hover{
+    background:var(--primary-hover);
+    transform:translateY(-2px);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:768px){
+
+    .sidebar{
+        width:100%;
+        position:relative;
+        height:auto;
+    }
+
+    .main-content{
+        margin-left:0;
+        padding:20px;
+    }
+
+    .logo{
+        width:110px;
+    }
+
+    .filter-section{
+        flex-direction:column;
+    }
+
+    .filter-section input{
+        min-width:100%;
+    }
+
+    table{
+        min-width:600px;
+    }
+}
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media(max-width:480px){
+
+    .header h1{
+        font-size:26px;
+    }
+
+    thead th,
+    tbody td{
+        padding:10px;
+        font-size:13px;
+    }
+
+    .receipt-btn{
+        padding:8px 12px;
+        font-size:12px;
+    }
+}
